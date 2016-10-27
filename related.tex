@@ -1,2 +1,37 @@
 \section{Related Work}
+\subsection{Content-Based Image Retrieval}
+Content-based image retrieval aims at searching for similar images
+through the analysis of image content. As DNNs learn rich mid-level
+image descriptors, ImageNet uses the feature vectors from the 7th
+layer in image retrieval and demonstrated outstanding
+performance~\cite{krizhevsky2012imagenet}. Babenko \textit{et al.}
+proposed to compress the DNN features using PAC and discriminative
+dimensionality reduction to improve the efficiency~\cite{babenko2014neural}.
 
+Due to the recent growth of visual contents, rapid search in a large
+database becomes an emerging need. In stead of linear search which has
+high computational cost, a practical strategy is to use the technique
+of Approximate Nearest Neighbor (ANN) or hashing based method for
+speed up~\cite{gionis1999similarity,weiss2009spectral,kulis2009learning,
+norouzi2011minimal,liu2012supervised,xia2014supervised}. These methods
+project the high-dimensional features to a lower dimensional space, and
+then generate the compact binary codes. Benefiting from the produced
+binary codes, fast image search can be carried out via binary pattern
+matching or Hamming distance measurement. However, these methods require
+to use similarity matrix to describe the relationship of the image pairs, which
+is no practical for a large-scale dataset. Recently Lin \textit{et al.}
+propose an effective deep learning framework to generate binary hash codes
+and image representations in a point-wised manner, making it suitable
+for large-scale datasets~\cite{lin2015deep}.
+
+\subsection{Image Analysis Applications}
+AverageExplorer is an interactive framework that allows an user to rapidly
+explore and visualize a large image collection using the medium of average
+images~\cite{zhu2014averageexplorer}. This real-time system provides a
+way to summarize large amounts of visual data by weighted averages of
+an image collection, with the weights reflecting user-indicated importance.
+Zhu \textit{et al.} propose a way to help user-controlled realistic image
+manipulation by learning the manifold of natural images and defining the
+image editing operations with constraints lie on the learned manifold at
+all times. Thus the model automatically adjusts the output keeping all edits
+as realistic as possible~\cite{zhu2016generative}.
