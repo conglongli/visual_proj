@@ -1,7 +1,23 @@
+\section{Resources}
+We will be building our system on top of code taken from Lin et al.~\cite{gitrepo} from their CVPR 2015 workshop paper.
+For hardware, we will be using the maas nodes owned by CMCL (maas.cmcl.cs.cmu.edu).
+These machines are equipped with GTX 980 graphics cards, and there are 10 available for use.
+
+We plan on using the CIFAR-10 and MNIST datasets when evaluating our system on moderately-sized datasets.
+CIFAR-10 contains 60,000 images, which we believe is representative of a typical user's photograph collection.
+When evaluating our system on large datasets, we hope to use a subset of Yahoo Webscope's 14.5tb image dataset.
+
 \section{Evaluation Plan and Goals}
 
 Our first goal is to create a system that returns qualitatively good content-based image retrieval based on user queries over multiple query images.
+This will require modification of Lin et al.'s work on binary hash codes to enable multiple query images.
+It is not entirely clear at the moment what this will entail, as the binary hash codes are built based on CNN activations as opposed to more
+classic computer vision techniques.
 
 Our next goal is to make this system achieve high performance over moderately sized (TODO: dataset name) data sets.
+One important application we are interested in supporting is allowing users to execute content-based queries on their
+own photo collections, so it is important that performance is well optimized for the user experience at this dataset size.
 
-Our final stretch goal is to scale this system to larger data sets, modifying it to be performant on these larger data sets.
+Our final stretch goal is to scale this system to larger data sets on the order of hundreds to thousands of gigabytes,
+modifying it to be performant on these larger data sets.
+To achieve this goal, we will run our system on a larger dataset and work to determine and alleviate performance bottlenecks.
