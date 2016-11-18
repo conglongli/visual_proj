@@ -1,28 +1,46 @@
-\section{Resources}
-We will be building our system on top of code taken from Lin et al.~\cite{gitrepo} from their CVPR 2015 workshop paper.
-For hardware, we will be using the maas nodes owned by CMCL (maas.cmcl.cs.cmu.edu).
-These machines are equipped with GTX 980 graphics cards, and there are 10 available for use.
+\section{Starter code}
+We are using starter code for the frontend forked from https://github.com/fancyspeed/py-cbir.
+We are using tensorflow for the machine learning portions of this project.
+All of this starter code was acquired and is running and has been modified.
 
-We plan on using a subset of Yahoo Webscope's 14.5tb image dataset to evaluate our system.
-To prototype the system we will be using the CIFAR-10 and MNIST datasets.
-CIFAR-10 contains 60,000 images, which we believe is large enough to provide a baseline for development
-without incurring long runtimes during prototyping.
+\section{Datasets}
+We are using the ImageNet dataset (140gb)~\cite{deng2009imagenet}. This dataset has been downloaded to our local machine.
+ImageNet is a good dataset to use because it is organized and labeled, allowing for fast automatic evaluation of our system.
+It has about 1 million images, which is a reasonable upper limit for typical personal photograph collections.
+We are using the Inception v3 neural network pre-trained on the imagenet dataset (2012).
+
+\section{Evaluation}
+Our goals have somewhat changed, and we are currently working on step 2 of exploring how different methods of
+calculating similarity between images yield better results.
+As a result, we are mostly looking at qualitative data rather than performance numbers.
+We built a simple automatic evaluation framework to score our content-based image retrieval system.
+Additionally, we inspect the returned images manually. Our final evaluation criteria will probably be some mix of the two.
 
 \section{Evaluation Plan and Goals}
 
 Our first goal is to take the work done by Lin et al. on representing images as binary strings based on neural network activations,
 and build a system that takes a simple brute force approach to evaluating similarity by L1 or L2 euclidean distance between the query and the dataset images.
-We hope to make this simple system reasonably fast by leveraging the inherently parallel nature of this workload.
+\textbf{We have already completed this goal.}
+
 
 Our next step is to explore different methods of calculating similarity between images.
-In particular, we hope to use a 2-3 layer CNN consisting of a ReLU layer sandwiched between fully connected layers,
+For example, we hope to use a 2-3 layer CNN consisting of a ReLU layer sandwiched between fully connected layers,
 training briefly on the set of input images then classifying images in the database using this CNN.
 We hope that this approach yields higher accuracy.
 Running a neural network will be a fairly expensive operation compared to a simple L1/L2 euclidean distance calculation,
 so it is likely we will need to modify our approach to making this efficient.
 At the moment it is not clear what this will entail, but our hope is that it will become apparent after analyzing
 the performance characteristics of the system.
+\textbf{We are working on this goal, and plan to complete it by the week ending Dec 2nd}
 
-Our final stretch goal is to scale this system to larger data sets on the order of multiple terabytes,
+Our final stretch goal is to scale this system to larger data sets on the order of hundreds of gigabytes.
 modifying it to be performant on these larger data sets.
 To achieve this goal, we will run our system on a larger dataset and work to determine and alleviate performance bottlenecks.
+\textbf{This goal is somewhat in parallel with the second goal, so we hope to complete it by the week ending Dec 2nd or 9th.}
+
+\section{Deliverables/Outcomes}
+We hope to show that machine-learning based approaches to content based image retrieval for multiple query images can be fast and yield qualitatively good results.
+The reason why this project is challenging is because there is no clear immediate solution to the multi-image query problem, and performing queries on large datasets efficiently
+is difficult.
+We will demonstrate success/failure by measuring the end-to-end latency between a user request and a returned result, and by measuring the qualitative "goodness" of the returned result.
+We will show a demo.
