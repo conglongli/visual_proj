@@ -1,0 +1,28 @@
+\section{Resources}
+We will be building our system on top of code taken from Lin et al.~\cite{gitrepo} from their CVPR 2015 workshop paper.
+For hardware, we will be using the maas nodes owned by CMCL (maas.cmcl.cs.cmu.edu).
+These machines are equipped with GTX 980 graphics cards, and there are 10 available for use.
+
+We plan on using a subset of Yahoo Webscope's 14.5tb image dataset to evaluate our system.
+To prototype the system we will be using the CIFAR-10 and MNIST datasets.
+CIFAR-10 contains 60,000 images, which we believe is large enough to provide a baseline for development
+without incurring long runtimes during prototyping.
+
+\section{Evaluation Plan and Goals}
+
+Our first goal is to take the work done by Lin et al. on representing images as binary strings based on neural network activations,
+and build a system that takes a simple brute force approach to evaluating similarity by L1 or L2 euclidean distance between the query and the dataset images.
+We hope to make this simple system reasonably fast by leveraging the inherently parallel nature of this workload.
+
+Our next step is to explore different methods of calculating similarity between images.
+In particular, we hope to use a 2-3 layer CNN consisting of a ReLU layer sandwiched between fully connected layers,
+training briefly on the set of input images then classifying images in the database using this CNN.
+We hope that this approach yields higher accuracy.
+Running a neural network will be a fairly expensive operation compared to a simple L1/L2 euclidean distance calculation,
+so it is likely we will need to modify our approach to making this efficient.
+At the moment it is not clear what this will entail, but our hope is that it will become apparent after analyzing
+the performance characteristics of the system.
+
+Our final stretch goal is to scale this system to larger data sets on the order of multiple terabytes,
+modifying it to be performant on these larger data sets.
+To achieve this goal, we will run our system on a larger dataset and work to determine and alleviate performance bottlenecks.
