@@ -7,6 +7,8 @@ All of this starter code was acquired and is running and has been modified.
 We are using the ImageNet dataset (140gb)~\cite{deng2009imagenet}. This dataset has been downloaded to our local machine.
 ImageNet is a good dataset to use because it is organized and labeled, allowing for fast automatic evaluation of our system.
 It has about 1 million images, which is a reasonable upper limit for typical personal photograph collections.
+For the first two goals, we will use a relatively small subset of the ImageNet data set in order to better evaluate the
+quality of the algorithmic side of this project, and for the last goal we will be using a more substantial subset of ImageNet.
 We are using the Inception v3 neural network pre-trained on the imagenet dataset (2012).
 
 \section{Evaluation}
@@ -21,7 +23,6 @@ Additionally, we inspect the returned images manually. Our final evaluation crit
 Our first goal is to take the work done by Lin et al. on representing images as binary strings based on neural network activations,
 and build a system that takes a simple brute force approach to evaluating similarity by L1 or L2 euclidean distance between the query and the dataset images.
 \textbf{We have already completed this goal.}
-
 
 Our next step is to explore different methods of calculating similarity between images.
 For example, we hope to use a 2-3 layer CNN consisting of a ReLU layer sandwiched between fully connected layers,
