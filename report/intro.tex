@@ -1,16 +1,30 @@
 \section{Introduction}
-We propose a system to allow users to provide multiple negative and positive image queries in order to retrieve images with similar content.
+Existing content-based image retrieval (CBIR) systems allow users to search for similar images
+for a single image. Recent CBIR systems improves the quality of results by
+using the Euclidean distances between feature
+vectors to find the similar images with similar features. On the other hand, users
+may like/dislike some of the returned similar images, but it's difficult to send this
+feedback to the server under the current system.
+
+To the end of this, we propose a CBIR system to allow users to provide multiple negative and positive image queries in order to retrieve images with similar content.
+With such CBIR system, users can repeatedly send refined queries until satisfied with
+the return similar images.
 One important application of our system is to allow users to search through their personal photo collections with content-based queries, and as
 such we will target datasets consisting of a reasonable number of images for a personal collection (1,000,000 images/~1tb).
-We plan to apply modern machine learning techniques in the context of computer vision to compactly express the content and features of the images, then leverage
-this representation to provide efficient querying of the data set.
+We implement two different algorithms to find similar images for multiple query images, and
+use different techniques to improve the performance of the processing.
 
-Evaluation of content-based image retrieval is qualitative, making it difficult to evaluate the success of this system.
-As such, the evaluation will be closely tied to qualitative analysis through user studies.
-Performance will be evaluated against other state of the art content-based image retrieval systems.
+We evaluate the CBIR system both qualitatively and quantitatively. In qualitative evaluation, our
+system constantly produce high-quality similar images of the query images. In quantitative
+evaluation, our system is able to process a 10-image query in 4 seconds when using a 300,000-image
+dataset.
 
-Content-based image retrieval allows retrieval of multimedia data based on the content of the image as opposed to metadata such as text annotations.
-In many cases, such annotations are absent or incomplete, necessitating this content-based approach to improve the accuracy and completeness of search results.
+% Evaluation of content-based image retrieval is qualitative, making it difficult to evaluate the success of this system.
+% As such, the evaluation will be closely tied to qualitative analysis through user studies.
+% Performance will be evaluated against other state of the art content-based image retrieval systems.
+
+% Content-based image retrieval allows retrieval of multimedia data based on the content of the image as opposed to metadata such as text annotations.
+% In many cases, such annotations are absent or incomplete, necessitating this content-based approach to improve the accuracy and completeness of search results.
 
 %Note: talk about how our system hopes to use a much simpler user interface than approaches like AverageExplorer which are quite complex and poorly suited for mobile.
 %Each image in its entirety will be a positive or negative query

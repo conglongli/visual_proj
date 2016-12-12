@@ -1,29 +1,3 @@
-\begin{algorithm}[th!]
-\small
-    \caption{Strategy 1: distance accumulation}
-    \SetKwInOut{Input}{input}
-    \SetKwInOut{Output}{output}
-    \Input{$n$ query images $\{Q_i\}$ with positive/negative flags $\{f_i\}$, \\
-      $m$ dataset images $\{D_j\}$, \\
-      cosine similarity between each $Q_i$ and $D_j$: $\{C_{ij}\}$, \\
-      number of similar images $k$.}
-    \Output{Top $k$ similar images.}
-    $dist \leftarrow$ empty hashtable \\
-    \For{\emph{each} $D_j$} {
-        \If{$D_j \notin \{Q_i\}$} {
-            \For{\emph{each} $Q_i$} {
-                \eIf{$f_i$ is positive} {
-                    $dist[D_j] \leftarrow dist[D_j] + C_{ij}$ \\
-                } {
-                    $dist[D_j] \leftarrow dist[D_j] - C_{ij}$ \\
-                }
-            }
-        }
-    }
-    \Return top $k$ $D_j$ with the largest $dist[D_j]$
-    \label{alg:accumulation}
-\end{algorithm}
-
 \section{Related Work}
 \subsection{Content-Based Image Retrieval}
 Content-based image retrieval aims at searching for similar images
@@ -61,6 +35,65 @@ manipulation by learning the manifold of natural images and defining the
 image editing operations with constraints lie on the learned manifold at
 all times. Thus the model automatically adjusts the output keeping all edits
 as realistic as possible~\cite{zhu2016generative}.
+
+\begin{algorithm}[th!]
+\small
+    \caption{Strategy 1: distance accumulation}
+    \SetKwInOut{Input}{input}
+    \SetKwInOut{Output}{output}
+    \Input{$n$ query images $\{Q_i\}$ with positive/negative flags $\{f_i\}$, \\
+      $m$ dataset images $\{D_j\}$, \\
+      cosine similarity between each $Q_i$ and $D_j$: $\{C_{ij}\}$, \\
+      number of similar images $k$.}
+    \Output{Top $k$ similar images.}
+    $dist \leftarrow$ empty hashtable \\
+    \For{\emph{each} $D_j$} {
+        \If{$D_j \notin \{Q_i\}$} {
+            \For{\emph{each} $Q_i$} {
+                \eIf{$f_i$ is positive} {
+                    $dist[D_j] \leftarrow dist[D_j] + C_{ij}$ \\
+                } {
+                    $dist[D_j] \leftarrow dist[D_j] - C_{ij}$ \\
+                }
+            }
+        }
+    }
+    \Return top $k$ $D_j$ with the largest $dist[D_j]$
+    \label{alg:accumulation}
+\end{algorithm}
+
+\begin{algorithm}[th!]
+\small
+    \caption{Strategy 2: set union and difference}
+    \SetKwInOut{Input}{input}
+    \SetKwInOut{Output}{output}
+    \Input{$n$ query images $\{Q_i\}$ with positive/negative flags $\{f_i\}$, \\
+      $m$ dataset images $\{D_j\}$, \\
+      consine similarity between each $Q_i$ and $D_j$: $\{C_{ij}\}$, \\
+      number of similar images $k$.}
+    \Output{Top $k$ similar images.}
+    $dist \leftarrow$ empty hashtable \\
+    $p \leftarrow \emptyset$ \\
+    $n \leftarrow \emptyset$ \\
+    \For{\emph{each} $Q_i$} {
+        $cand \leftarrow$ top $D_j$ with the largest $C_{ij}$ \\
+        \For{\emph{each} $D_j$ in $cand$} {
+            \eIf{$f_i$ is positive} {
+                $dist[D_j] \leftarrow dist[D_j] + C_{ij}$ \\
+            } {
+                $dist[D_j] \leftarrow dist[D_j] - C_{ij}$ \\
+            }
+        }
+        \eIf{$f_i$ is positive} {
+            $p \leftarrow p \cup cand$ \\
+        } {
+            $n \leftarrow n \cup cand$ \\
+        }   
+    }
+    $ret \leftarrow p \setminus n$ \\
+    \Return top $k$ $D_j$ from $ret$ with the largest $dist[D_j]$
+    \label{alg:set}
+\end{algorithm}
 
 \section{Algorithm}
 \label{sec:algo}
@@ -101,37 +134,6 @@ strategy would produce more "stable" results since it exclude the case where a d
 might not be very similar to any positive query image (each single cosine similarity score) but
 has a relatively high total similarity score.
 
-\begin{algorithm}[t]
-\small
-    \caption{Strategy 2: set union and difference}
-    \SetKwInOut{Input}{input}
-    \SetKwInOut{Output}{output}
-    \Input{$n$ query images $\{Q_i\}$ with positive/negative flags $\{f_i\}$, \\
-      $m$ dataset images $\{D_j\}$, \\
-      consine similarity between each $Q_i$ and $D_j$: $\{C_{ij}\}$, \\
-      number of similar images $k$.}
-    \Output{Top $k$ similar images.}
-    $dist \leftarrow$ empty hashtable \\
-    $p \leftarrow \emptyset$ \\
-    $n \leftarrow \emptyset$ \\
-    \For{\emph{each} $Q_i$} {
-        $cand \leftarrow$ top $D_j$ with the largest $C_{ij}$ \\
-        \For{\emph{each} $D_j$ in $cand$} {
-            \eIf{$f_i$ is positive} {
-                $dist[D_j] \leftarrow dist[D_j] + C_{ij}$ \\
-            } {
-                $dist[D_j] \leftarrow dist[D_j] - C_{ij}$ \\
-            }
-        }
-        \eIf{$f_i$ is positive} {
-            $p \leftarrow p \cup cand$ \\
-        } {
-            $n \leftarrow n \cup cand$ \\
-        }   
-    }
-    $ret \leftarrow p \setminus n$ \\
-    \Return top $k$ $D_j$ from $ret$ with the largest $dist[D_j]$
-    \label{alg:set}
-\end{algorithm}
+
 
 
