@@ -2,7 +2,7 @@
 \begin{minipage}{1.0\columnwidth}
     \centering
     \includegraphics[width=0.9\columnwidth]{figs/system-design}
-    \label{system-design}
+    \label{fig:system-design}
 \end{minipage}
 The system works as follows:\\
     1. The frontend sends a series of query images (include and/or exclude) to the backend. \\
@@ -28,6 +28,7 @@ tolerant to rounding and quantization, so we believe there are further performan
 operation.
 
 \subsection{Optimizations}
+\label{sec:optimizations}
 One of the goals of the system was to enable fast (<1s) queries of the image set in order to achieve
 a good user experience.
 In order to reach this performance goal, we implemented 2 preprocessing steps.
@@ -40,13 +41,12 @@ future work.
 One possible difficulty in using the output of earlier layers is that the amount of memory and computation
 increases as the size of the hash increases, and the activations output by earlier layers are larger than
 the output of pool\_3.
-This preprocessing step takes about TODO hours of CPU time to preprocess 300,000 images.
 
 The second preprocessing step pre-loads all of the hashes from MongoDB into a matrix stored by the backend.
 This allows queries to occur without any of the overhead associated with marshalling data into different formats.
-This step takes about TODO 120 seconds to complete and is done once every time the dataset changes.
 
 \section{Evaluation}
+\label{sec:eval}
 The evaluation of the query result quality and the performance were done completely separately.
 The former was done using user studies and on a hand-picked image set (dataset 1), while the latter was done
 on an arbitrarily chosen subset of the ImageNet dataset\cite{krizhevsky2012imagenet} (dataset 2).
@@ -54,4 +54,46 @@ on an arbitrarily chosen subset of the ImageNet dataset\cite{krizhevsky2012image
 Dataset 1 is of modest size (about 150 images), whereas dataset 2 varies in size from 10,000 to 300,000 images.
 Due to time constraints, image sets larger than 300,000 images were left for future work.
 
-\section{Summary}
+\subsection{Testbed}
+All performance experiments were run on a server with 128gb of DRAM and 2x Intel Xeon E5-2683, each of which has 32 hardware threads running at 2.1GHz.
+Due to time constraints, all results shown are of a single trial.
+
+\subsection{Performance Evaluation}
+%real    378m0.593s
+%user    11362m13.508s
+%sys     51m41.416s
+To evaluate performance, we used 300,000 arbitrarily chosen images from the ImageNet dataset.
+We believe that this number is representative of a typical user's photo collection.
+The first preprocessing step takes 189 hours of CPU time (about 6 hours on our testbed) to compute the hashes of 300,000 images and load them into the database.
+
+\begin{minipage}{1.0\columnwidth}
+    \centering
+    \includegraphics[width=0.9\columnwidth]{figs/vary-dataset}
+    \label{fig:vary-dataset}
+\end{minipage}
+Figure~\ref{fig:vary-dataset} describes the execution time (wall clock) for both Preprocessing Step 2~\ref{sec:optimizations} and the actual query execution.
+The matrix construction step (Preprocessing Step 2) grows at a linear rate as the number of dataset images increases, which is expected.
+
+During query execution, we notice that the set search experiences much higher growth in execution time as the dataset size increases than basic search.
+This is because the amount of post-processing after the distance calculation is much larger for the set search.
+
+For 10 queries and 300,000 images, basic search achieves just over 4 seconds to execute a single query, which is slightly on the long side. Future work includes
+speeding this up to under 1 second to improve the user experience.
+
+\begin{minipage}{1.0\columnwidth}
+    \centering
+    \includegraphics[width=0.9\columnwidth]{figs/vary-queries}
+    \label{fig:vary-queries}
+\end{minipage}
+
+Similar to Figure~\ref{fig:vary-dataset}, Figure~\ref{fig:vary-queries} shows the execution time (wall clock) for Preprocessing Step 2 and the actual query execution.
+
+The matrix construction step (Preprocessing Step 2) is not affected by the number of queries.
+
+The query execution time appears to grow very slowly as the number of queries increases for basic search.
+
+However, the data turned out to be inconclusive for set search. This may be due to the specific choice of query images, as
+certain query image combinations may result in cheaper set operations (Set union, difference).
+\subsection{Quality Evaluation}
+
+\section{Conclusion}
