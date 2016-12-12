@@ -1,9 +1,13 @@
+
 \section{Implementation}
-\begin{minipage}{1.0\columnwidth}
-    \centering
-    \includegraphics[width=0.9\columnwidth]{figs/system-design}
+\begin{figure}[t]
+    \begin{minipage}{1.0\columnwidth}
+        \centering
+        \includegraphics[width=0.9\columnwidth]{figs/system-design}
+    \end{minipage}
+    \caption{Overall System Design}
     \label{fig:system-design}
-\end{minipage}
+\end{figure}
 The system works as follows:\\
     1. The frontend sends a series of query images (include and/or exclude) to the backend. \\
     2. The backend calculates the cosine distance from the hash of every query image to the hash of every image in the database. \\
@@ -66,11 +70,14 @@ To evaluate performance, we used 300,000 arbitrarily chosen images from the Imag
 We believe that this number is representative of a typical user's photo collection.
 The first preprocessing step takes 189 hours of CPU time (about 6 hours on our testbed) to compute the hashes of 300,000 images and load them into the database.
 
-\begin{minipage}{1.0\columnwidth}
-    \centering
-    \includegraphics[width=0.9\columnwidth]{figs/vary-dataset}
+\begin{figure}[t]
+    \begin{minipage}{1.0\columnwidth}
+        \centering
+        \includegraphics[width=0.9\columnwidth]{figs/vary-dataset}
+    \end{minipage}
+    \caption{Performance varying dataset size on a set of 10 queries.}
     \label{fig:vary-dataset}
-\end{minipage}
+\end{figure}
 Figure~\ref{fig:vary-dataset} describes the execution time (wall clock) for both Preprocessing Step 2~\ref{sec:optimizations} and the actual query execution.
 The matrix construction step (Preprocessing Step 2) grows at a linear rate as the number of dataset images increases, which is expected.
 
@@ -80,11 +87,14 @@ This is because the amount of post-processing after the distance calculation is 
 For 10 queries and 300,000 images, basic search achieves just over 4 seconds to execute a single query, which is slightly on the long side. Future work includes
 speeding this up to under 1 second to improve the user experience.
 
-\begin{minipage}{1.0\columnwidth}
-    \centering
-    \includegraphics[width=0.9\columnwidth]{figs/vary-queries}
+\begin{figure}[t]
+    \begin{minipage}{1.0\columnwidth}
+        \centering
+        \includegraphics[width=0.9\columnwidth]{figs/vary-queries}
+    \end{minipage}
+    \caption{Performance varying queries on a dataset of 300,000 images.}
     \label{fig:vary-queries}
-\end{minipage}
+\end{figure}
 
 Similar to Figure~\ref{fig:vary-dataset}, Figure~\ref{fig:vary-queries} shows the execution time (wall clock) for Preprocessing Step 2 and the actual query execution.
 
