@@ -53,7 +53,7 @@ This allows queries to occur without any of the overhead associated with marshal
 \label{sec:eval}
 The evaluation of the query result quality and the performance were done completely separately.
 The former was done using user studies and on a hand-picked image set (dataset 1), while the latter was done
-on an arbitrarily chosen subset of the ImageNet dataset\cite{krizhevsky2012imagenet} (dataset 2).
+on an arbitrarily chosen subset of the ImageNet dataset~\cite{krizhevsky2012imagenet} (dataset 2).
 
 Dataset 1 is of modest size (about 150 images), whereas dataset 2 varies in size from 10,000 to 300,000 images.
 Due to time constraints, image sets larger than 300,000 images were left for future work.
@@ -84,8 +84,9 @@ The matrix construction step (Preprocessing Step 2) grows at a linear rate as th
 During query execution, we notice that the set search experiences much higher growth in execution time as the dataset size increases than basic search.
 This is because the amount of post-processing after the distance calculation is much larger for the set search.
 
-For 10 queries and 300,000 images, basic search achieves just over 4 seconds to execute a single query, which is slightly on the long side. Future work includes
-speeding this up to under 1 second to improve the user experience.
+For 10 queries and 300,000 images, basic search achieves just over 4 seconds to execute a single query, which is on the long side (by an order of magnitude.
+The reason for this is because the overhead of data type/format marshalling in python is dominating the cost of actual computation. Future work includes
+implementing this in a lower level language and getting performance down to where it should be.
 
 \begin{figure}[t]
     \begin{minipage}{1.0\columnwidth}
@@ -102,8 +103,14 @@ The matrix construction step (Preprocessing Step 2) is not affected by the numbe
 
 The query execution time appears to grow very slowly as the number of queries increases for basic search.
 
-However, the data turned out to be inconclusive for set search. This may be due to the specific choice of query images, as
-certain query image combinations may result in cheaper set operations (Set union, difference).
+However, the data turned out to be inconclusive for set search.
+Again, in both cases the amount of time taken to compute the result of the query is an order of magnitude longer than it should be
+(a matrix multiplication of this size should take milliseconds, not seconds).
+
+These performance overhead issues are not addressed in this project because the scope of this project is primarily
+algorithmic exploration with some smaller emphasis on performance.
+Further work involves more emphasis on performance to run queries over 1,000,000 images in less than 1 second.
+
 \subsection{Quality Evaluation}
 
 \section{Conclusion}
